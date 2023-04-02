@@ -3,6 +3,7 @@
 //import the needed node_modules
 const express = require("express");
 const morgan = require("morgan");
+// const cors = require("cors")
 
 //exports of the handler functions
 
@@ -19,8 +20,8 @@ express()
     .use(morgan("tiny"))
     .use(express.static("public"))
     .use(express.json())
-    .use(express.urlencoded({ extended: false }))
-    .use("/", express.static(__dirname + "/"))
+    // .use(express.urlencoded({ extended: false }))
+    // .use("/", express.static(__dirname + "/"))
 
     //SERVER VALIDATION ENDPOINT
     .post("/api/users", (req, res) => validateUser(req, res))

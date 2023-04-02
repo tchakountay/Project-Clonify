@@ -35,13 +35,12 @@ const Homepage = () => {
     setSignUpForm(false);
   };
 
-
 // fetch to get the users collection from the db
 // handles the confirmation of the users in the db
   const handleClick = (event) => {
     event.preventDefault();
     setSubStatus("loading");
-    fetch("/api/users", {
+    fetch("http://localhost:8000/api/users", {
       method: "POST",
       body: JSON.stringify(loginFormData),
       headers: {
@@ -60,7 +59,13 @@ const Homepage = () => {
           setSubStatus("error");
           setErrorMsgs(errors[error]);
         }
-      });
+      })
+      .catch((error) => {
+        console.error(error);
+        setSubStatus("error");
+        setErrorMsgs("Something went wrong, please try again later.");
+      }
+      )
   };
 
   //Handles the signup form appearance

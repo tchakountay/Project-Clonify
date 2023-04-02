@@ -5,6 +5,7 @@ const LoginButton = ({ handleClick, subStatus, disabled }) => {
         <Container onClick={handleClick} disabled={disabled}>
             {subStatus === "loading" && <div>Loading...</div>}
             {subStatus === "idle" &&<div>Login to Clonify</div>}
+            {subStatus === "error" &&<div>Login to Clonify</div>}
         </Container>
     )
 }
