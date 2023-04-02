@@ -9,13 +9,11 @@ const morgan = require("morgan");
 const {
     // getAllUsers,
     // getUserById,
-    createUser
+    // createUser,
+    validateUser
     // updateUser,
     // deleteUser
 } = require("./handlers")
-
-//const for the PORT
-const PORT = process.env.PORT || 8000;
 
 express()
     .use(morgan("tiny"))
@@ -24,12 +22,20 @@ express()
     .use(express.urlencoded({ extended: false }))
     .use("/", express.static(__dirname + "/"))
 
+    //SERVER VALIDATION ENDPOINT
+    .post("/api/users", (req, res) => validateUser(req, res))
+
     //ENDPOINT to get the users
 
     //ENDPOINT to add a user
-    .post("/api/users", (req, res) => createUser(req, res))
+    // .post("/api/users", (req, res) => createUser(req, res))
 
     // handle 404s
-    .use((req, res) => res.status(404).type("txt").send("🤷‍♂️"))
+    .get("*", (req, res) => {
+        res.status(404).json({
+        status: 404,
+        message: "This is obviously not what you are looking for.",
+        });
+    })
 
-    .listen(PORT, () => console.log(`Listening on port ${PORT}`));
+    .listen(8000, () => console.log(`Listening on port 8000`));
