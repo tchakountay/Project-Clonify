@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import Input from "./Input";
+import InputLogin from "./InputLogin";
 import React from "react";
 import LoginButton from "./LoginBtn";
+import ErrorMessages from "../Errors";
 
 const Login = ({
   handleSignup,
@@ -10,12 +11,12 @@ const Login = ({
   loginFormData,
   handleClick,
   subStatus,
+  errorMsgs,
 }) => {
   const handleSignupClick = (event) => {
     event.preventDefault();
     handleSignup();
   };
-
   return (
     <FormDiv>
       <Title>Login</Title>
@@ -24,7 +25,7 @@ const Login = ({
           <div>
             <InputTxt>Email:</InputTxt>
           </div>
-          <Input
+          <InputLogin
             name="email"
             type="text"
             placeholder="Email"
@@ -35,14 +36,13 @@ const Login = ({
           <div>
             <InputTxt>Password:</InputTxt>
           </div>
-          <Input
+          <InputLogin
             name="password"
             type="password"
             placeholder="Password"
             handleChange={handleChange}
           />
         </InputDiv>
-
         <BtnDiv>
           <OrSignUpBtn onClick={handleSignupClick}> or Sign Up </OrSignUpBtn>
           <LoginButton
@@ -52,10 +52,12 @@ const Login = ({
             subStatus={subStatus}
           />
         </BtnDiv>
+        {subStatus === "error" && <ErrorMessages child={errorMsgs}/>}
       </LoginForm>
     </FormDiv>
   );
 };
+
 
 const FormDiv = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 
-const Input = ({ name, type, placeholder, handleChange }) => {
+const InputLogin = ({ name, type, placeholder, handleChange }) => {
   return (
     <Wrapper>
       <label htmlFor={name}>{placeholder}</label>
@@ -31,4 +31,4 @@ const Wrapper = styled.div`
   }
 `;
 
-export default Input;
+export default InputLogin;
