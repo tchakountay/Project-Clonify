@@ -2,12 +2,15 @@ import Navbar from "./Navigationbar";
 import SignUp from "./Signup";
 import Login from "./Login";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import React from "react";
 
 import { errors, initialStateLogin, initialStateSignup } from "../settings";
 
-const Homepage = () => {
+const Homepage = ({userId, setUserId}) => {
+  const navigate = useNavigate();
+
   const [loginForm, setLoginForm] = useState(false);
   const [signUpForm, setSignUpForm] = useState(false);
 
@@ -74,15 +77,19 @@ const handleClick2 = (event) => {
     method: "POST",
     body: JSON.stringify(signUpFormData),
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
   })
-    .then((res) => res.json())
+    .then((res) =>res.json())
     .then((json) => {
       const { status, error } = json;
       console.log(json);
-      if (status === "success") {
+      if (status === 200) {
         setSubStatus2("confirmed");
+        console.log("navigating to welcome page");
+        navigate(`/welcome/${json.data.insertedId}/${signUpFormData.firstName}_${signUpFormData.lastName}`);
+        console.log(signUpFormData);
       } else if (error) {
         setSubStatus2("error");
         setErrorMsgs2(errors[error]);

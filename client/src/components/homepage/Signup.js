@@ -12,7 +12,6 @@ const SignUp = ({
   handleClick2,
   errorMsgs2,
 }) => {
-  console.log(disabled2);
   return (
     <FormDiv>
       <Title>Sign up</Title>

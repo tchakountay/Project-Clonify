@@ -9,7 +9,7 @@ const cors = require("cors")
 
 const {
     // getAllUsers,
-    // getUserById,
+    getUserById,
     createUser,
     validateUser
     // updateUser,
@@ -34,6 +34,8 @@ express()
     //SERVER REGISTER ENDPOINT
     .post("/api/register", (req, res) => createUser(req, res))
 
+    //SERVER USER DATA ENDPOINT
+    .get("/api/get-user/:userId", (req, res) => getUserById(req, res, req.params.userId))
     // handle 404s
     .get("*", (req, res) => {
         res.status(404).json({

@@ -143,29 +143,41 @@ const createUser = async (req, res) => {
         password: userInput.password,
       };
       const result = await userCollection.insertOne(newUser);
-      if (result.insertedCount === 1) {
-        res.status(201).json({
-          status: "success",
-          message: "User created successfully",
-          data: newUser
-        })
-      } else {
-        ewa.status(500).json({
-          error: "Internal server error",
-          status: "error",
-          message: "Failed to create user",
-        });
-      }
+      console.log(`Added ${newUser.firstName} ${newUser.lastName} to database`);
+      
+      res.status(200).json({ status: 200, data: result });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ status: 500, message: "Error creating account" });
   } finally {
     await client.close();
   }
 };
 
+//GET USER BY ID HANDLER FUNCTION
+const getUserById = async (req, res, userId) => {
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    console.log("Connected successfully to server");
+
+    const user = await client.db("users_db").collection("users").findOne({ _id: userId});
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+  }
+  catch (error) {
+  }
+  finally {
+    await client.close();
+    console.log("Connection closed");
+  }
+}
 module.exports = {
   validateUser,
   createUser,
+  getUserById
 };
