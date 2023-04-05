@@ -3,14 +3,16 @@ import SignUp from "./Signup";
 import Login from "./Login";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import React from "react";
 
 import { errors, initialStateLogin, initialStateSignup } from "../settings";
+import { UserContext } from "../context/UserContext";
 
 const Homepage = ({userId, setUserId}) => {
   const navigate = useNavigate();
 
+  const {setCurrentUser} = useContext(UserContext);
   const [loginForm, setLoginForm] = useState(false);
   const [signUpForm, setSignUpForm] = useState(false);
 
@@ -88,7 +90,8 @@ const handleClick2 = (event) => {
       if (status === 200) {
         setSubStatus2("confirmed");
         console.log("navigating to welcome page");
-        navigate(`/welcome/${json.data.insertedId}/${signUpFormData.firstName}_${signUpFormData.lastName}`);
+        setCurrentUser(json.data);
+        navigate(`/welcome`);
         console.log(signUpFormData);
       } else if (error) {
         setSubStatus2("error");
@@ -119,8 +122,11 @@ const handleClick = (event) => {
     .then((json) => {
       const { status, error } = json;
       console.log(json);
-      if (status === "success") {
+      if (status === 200) {
         setSubStatus("confirmed");
+        setCurrentUser(json.data);
+        console.log("navigating to home page");
+        navigate(`/home`);
       } else if (error) {
         setSubStatus("error");
         setErrorMsgs(errors[error]);

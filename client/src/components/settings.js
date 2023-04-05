@@ -11,7 +11,7 @@ export const initialStateSignup = {
 }
 
 export const errors = {
-    user_undefined: 'User not found in the database',
+    user_undefined: 'User not found',
     invalid_email: 'This email is invalid. Please try again.',
     password_undefined: 'Wrong password. Please try again.',
     password_mismatch: 'Passwords do not match. Please try again.',

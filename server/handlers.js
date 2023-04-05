@@ -28,39 +28,15 @@ const validateUser = async (req, res) => {
     //collection of users
     const userCollection = db.collection("users");
 
-    const users = await userCollection.find().toArray();
+    const user = await userCollection.findOne({
+      email: userInput.email,
+      password: userInput.password
+    })
 
-    //for each user if email & password matches one in the db
-    //validateUser is true
-    users.forEach((user) => {
-      if (
-        user.email === userInput.email &&
-        user.password === userInput.password
-      ) {
-        validateUser = true;
-        console.log("user found");
-      } else if (
-        user.email === userInput.email &&
-        user.password !== userInput.password
-      ) {
-        res.status(401).json({
-          error: "password_undefined",
-          status: "error",
-          message: "Invalid Credentials",
-        });
-      } else if (user.email !== userInput.email) {
-        validateUser = false;
-      }
-    });
-
-    //invalid password && invalid user
-    if (userInput.email.includes("@") === false) {
-      res.status(400).json({
-        error: "invalid_email",
-        status: "error",
-        message: "Please enter a valid email",
-      });
-    } else if (validateUser === false) {
+    if (user !== null) {
+      res.status(200).json({ status: 200, data: user });
+    } else {
+      // if user is null, it means the user was not found in the database
       res.status(400).json({
         error: "user_undefined",
         status: "error",
@@ -145,7 +121,7 @@ const createUser = async (req, res) => {
       const result = await userCollection.insertOne(newUser);
       console.log(`Added ${newUser.firstName} ${newUser.lastName} to database`);
       
-      res.status(200).json({ status: 200, data: result });
+      res.status(200).json({ status: 200, data: newUser });
     }
   } catch (error) {
     console.error(error);

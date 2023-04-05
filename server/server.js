@@ -3,7 +3,7 @@
 //import the needed node_modules
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors")
+const cors = require("cors");
 
 //exports of the handler functions
 
@@ -25,8 +25,6 @@ express()
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"]
     }))
-    // .use(express.urlencoded({ extended: false }))
-    // .use("/", express.static(__dirname + "/"))
 
     //SERVER LOGIN VALIDATION ENDPOINT
     .post("/api/login", (req, res) => validateUser(req, res))

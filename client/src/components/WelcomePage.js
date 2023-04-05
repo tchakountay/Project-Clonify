@@ -1,21 +1,23 @@
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "./context/UserContext";
 
 const Welcome = () => {
-    const { userId, userFullName } = useParams()
-    console.log(userId);
-    console.log(userFullName);
-
-    const user = userFullName.split("_");
+    const { currentUser } = useContext(UserContext);
 
   return (
     <Container>
-        <Title>Welcome {user[0]}</Title>
-        <Connect>Connect to Clonify</Connect>
+        <Title>Welcome {currentUser.firstName}</Title>
+        <Redirect to={`/home`}>
+          <Connect>Connect to Clonify</Connect>
+        </Redirect>
     </Container>
   );
 };
 
+const Redirect = styled(NavLink)`
+`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
