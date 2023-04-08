@@ -33,7 +33,7 @@ const validateUser = async (req, res) => {
       password: userInput.password
     })
 
-    if (user !== null) {
+    if (user) {
       res.status(200).json({ status: 200, data: user });
     } else {
       // if user is null, it means the user was not found in the database

@@ -5,7 +5,6 @@ import { UserContext } from '../context/UserContext';
 
 const Home = () => {
     const {currentUser} = useContext(UserContext);
-    console.log(currentUser);
     return (
         <Container>
             <SideNavBar/>

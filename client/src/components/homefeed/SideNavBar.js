@@ -66,6 +66,7 @@ const Title = styled.h1`
   font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
   margin-bottom: 1rem;
   margin-top: 1rem;
+  position: relative;
 `;
 
 const PlaylistDiv = styled.div`
@@ -102,8 +103,11 @@ const Container = styled.div`
   flex-direction: column;
   background-color: black;
   width: 250px;
+  min-width: 250px;
   height: 100vh;
+  position: relative;
 `;
+
 const Navigation = styled.div`
   display: flex;
   flex-direction: column;
@@ -130,7 +134,7 @@ const Nav = styled(NavLink)`
   display: flex;
   align-items: center;
   width: 190px;
-  padding-left: 10px;
+  margin-left: 10px;
   &.active {
     opacity: 0.8;
   }

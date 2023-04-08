@@ -9,7 +9,7 @@ import React from "react";
 import { errors, initialStateLogin, initialStateSignup } from "../settings";
 import { UserContext } from "../context/UserContext";
 
-const Homepage = ({userId, setUserId}) => {
+const Homepage = ({code, userId, setUserId}) => {
   const navigate = useNavigate();
 
   const {setCurrentUser} = useContext(UserContext);
