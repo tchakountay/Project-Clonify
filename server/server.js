@@ -4,18 +4,16 @@ const express = require("express");
 const SpotifyWebApi = require("spotify-web-api-node");
 const morgan = require("morgan");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 //exports of the handler functions
-const {
-    getUserById,
-    createUser,
-    validateUser
-} = require("./handlers")
+const { getUserById, createUser, validateUser } = require("./handlers");
 
 express()
   .use(morgan("tiny"))
   .use(express.static("public"))
   .use(express.json())
+  .use(bodyParser.json())
   .use(
     cors({
       origin: "http://localhost:3000",

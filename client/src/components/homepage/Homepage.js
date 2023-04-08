@@ -1,6 +1,7 @@
 import Navbar from "./Navigationbar";
 import SignUp from "./Signup";
 import Login from "./Login";
+import useAuth from "../useAuth";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import { UserContext } from "../context/UserContext";
 
 const Homepage = ({code, userId, setUserId}) => {
   const navigate = useNavigate();
+  const accessToken = useAuth(code);
 
   const {setCurrentUser} = useContext(UserContext);
   const [loginForm, setLoginForm] = useState(false);
