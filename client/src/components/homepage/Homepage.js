@@ -1,7 +1,6 @@
 import Navbar from "./Navigationbar";
 import SignUp from "./Signup";
 import Login from "./Login";
-import useAuth from "../useAuth";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -10,9 +9,8 @@ import React from "react";
 import { errors, initialStateLogin, initialStateSignup } from "../settings";
 import { UserContext } from "../context/UserContext";
 
-const Homepage = ({code, userId, setUserId}) => {
+const Homepage = ({ userId, setUserId}) => {
   const navigate = useNavigate();
-  const accessToken = useAuth(code);
 
   const {setCurrentUser} = useContext(UserContext);
   const [loginForm, setLoginForm] = useState(false);
@@ -156,6 +154,7 @@ const handleClick = (event) => {
           <>
             <LoginDiv loginForm={loginForm}>
               <Login
+                // accessToken={accessToken}
                 disabled={disabled}
                 handleChange={handleChange}
                 loginFormData={loginFormData}

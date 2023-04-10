@@ -1,15 +1,19 @@
 import styled from "styled-components";
 
-const SongCard = ({ name, artist, imageSrc }) => {
+const SongCard = ({ name, artist, imageSrc, chooseSong }) => {
+  let displayName = name;
+  if (name.length > 40) {
+    displayName = name.substr(0, 40) + "...";
+  }
   return (
-    <Container>
+    <Container onClick={chooseSong}>
       <CoverArt src={imageSrc} alt="album-cover" />
       <Info>
           <ArtistName>
             <p>{artist}</p>
           </ArtistName>
           <SongName>
-              <p>{name}</p>
+              <p>{displayName}</p>
           </SongName>
       </Info>
     </Container>
@@ -28,6 +32,9 @@ const SongName = styled.span`
   display: flex;
   justify-content: flex-start;
   width: 100%;
+  p {
+    font-size: 14px
+  }
 `
 const ArtistName = styled.span`
   display: flex;

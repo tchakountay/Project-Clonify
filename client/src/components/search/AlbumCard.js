@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 const AlbumCard = ({name, artist, imageSrc}) => {
+    let displayName = name;
+    if (name.length > 20) {
+        displayName = name.slice(0, 40) + "...";
+    }
     return (
         <Container>
           <CoverArt src={imageSrc} alt="album-cover" />
@@ -8,9 +12,9 @@ const AlbumCard = ({name, artist, imageSrc}) => {
               <ArtistName>
                 <p>{artist}</p>
               </ArtistName>
-              <SongName>
-                  <p>{name}</p>
-              </SongName>
+              <AlbumName>
+                  <p>{displayName}</p>
+              </AlbumName>
           </Info>
         </Container>
       );
@@ -24,10 +28,14 @@ const AlbumCard = ({name, artist, imageSrc}) => {
       width: 100%;
     `
     
-    const SongName = styled.span`
+    const AlbumName = styled.span`
       display: flex;
       justify-content: flex-start;
       width: 100%;
+
+      p {
+        font-size: 14px;
+      }
     `
     const ArtistName = styled.span`
       display: flex;

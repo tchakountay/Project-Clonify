@@ -104,7 +104,7 @@ const Container = styled.div`
   background-color: black;
   width: 250px;
   min-width: 250px;
-  height: 100vh;
+  height: 90vh;
   position: relative;
 `;
 

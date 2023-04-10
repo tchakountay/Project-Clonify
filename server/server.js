@@ -22,11 +22,36 @@ express()
     })
   )
 
-  .post("/login", (req, res) => {
+  //SPOTIFY REFRESH TOKEN ENDPOINT
+.post("/spotifyrefresh", (req, res) => {
+  const refreshToken = req.body.refreshToken
+  const spotifyApi = new SpotifyWebApi({
+    redirectUri: process.env.REDIRECT_URI,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    refreshToken,
+  })
+
+  spotifyApi
+    .refreshAccessToken()
+    .then(data => {
+      res.json({
+        accessToken: data.body.accessToken,
+        expiresIn: data.body.expiresIn,
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.sendStatus(400)
+    })
+})
+
+  //SPOTIFY SERVER LOGIN ENDPOINT
+  .post("/spotifylogin", (req, res) => {
     const code = req.body.code;
     const spotifyApi = new SpotifyWebApi({
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      clientId: process.env.REACT_APP_CLIENT_ID,
+      clientSecret: process.env.REACT_APP_CLIENT_SECRET,
       redirectUri: "http://localhost:3000",
     });
     spotifyApi

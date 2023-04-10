@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
 const ArtistCard = ({artist, imageSrc}) => {
-    return (
+    let displayName = artist;
+    if (artist.length > 20) {
+      displayName = artist.slice(0, 20) + "...";
+    }
+  return (
         <Container>
           <CoverArt src={imageSrc} alt="album-cover" />
           <Info>
               <ArtistName>
-                <p>{artist}</p>
+                <p>{displayName}</p>
               </ArtistName>
           </Info>
         </Container>
@@ -27,7 +31,7 @@ const ArtistCard = ({artist, imageSrc}) => {
       width: 100%;
       max-width: 150px;
       p {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
       }
     `;

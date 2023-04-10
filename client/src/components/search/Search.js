@@ -4,88 +4,61 @@ import SongCard from "./SongCard";
 import ArtistCard from "./ArtistCard";
 import AlbumCard from "./AlbumCard";
 import MusicPlayer from "../MusicPlayer";
-import { useState } from "react";
+import SpotifyWebApi from "spotify-web-api-node";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
-const Search = ({ accessToken }) => {
-  let cancelReq = true;
+const Search = ({accessToken}) => {
+  console.log(accessToken)
+
   const [searchInput, setSearchInput] = useState("");
+
+  //search results by song, artist and album
   const [songs, setSongs] = useState([]);
   const [singers, setSingers] = useState([]);
   const [albums, setAlbums] = useState([]);
-  const [selectedSong, setSelectedSong] = useState(null);
+  const [selectedSong, setSelectedSong] = useState({});
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
-    setSearchInput(event.target.value);
+  const chooseSong = (song) => {
+    setSelectedSong(song);
+  }
 
-    //RESULTS for ARTISTS
-    let artistParams = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
-    let artistID = await fetch(
-      "https://api.spotify.com/v1/search?q=" + searchInput + "&type=artist",
-      artistParams
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setSingers(data.artists.items);
-      });
+  const spotifyApi = new SpotifyWebApi({
+    clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
+    accessToken: accessToken || localStorage.getItem('accessToken'),
+  });
 
-    //RESULTS for ALBUMS
-    let albumParams = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
+  useEffect(() => {
+    if (!searchInput) return setSongs([]), setSingers([]), setAlbums([]);
+    
+    //search result by song
+    spotifyApi.searchTracks(searchInput).then((res) => {
+      setSongs(res.body.tracks.items);
+    })
+    
+    //search result by artist
+    spotifyApi.searchArtists(searchInput).then((res) => {
+      setSingers(res.body.artists.items);
+    })
 
-    let albumID = await fetch(
-      "https://api.spotify.com/v1/search?q=" + searchInput + "&type=album",
-      albumParams
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setAlbums(data.albums.items);
-      });
-
-    //RESULTS for SONGS
-    let songParams = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    let songID = await fetch(
-      "https://api.spotify.com/v1/search?q=" + searchInput + "&type=track",
-      songParams
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setSongs(data.tracks.items);
-      });
-  };
-  console.log(songs);
+    //search result by album
+    spotifyApi.searchAlbums(searchInput).then((res) => {
+      setAlbums(res.body.albums.items);
+    })
+    
+  }, [searchInput, accessToken]);
 
   return (
     <Container>
+    <SearchPage>
       <SideNavBar />
       <SearchDiv>
-        <SearchForm onSubmit={handleSearch}>
+        <SearchForm>
           <input
             type="text"
             placeholder="Search"
-            onChange={handleSearch}
             value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
           />
           <Results>
             {songs.length > 0 && searchInput !== "" && (
@@ -97,11 +70,11 @@ const Search = ({ accessToken }) => {
                   {songs.map((song) => {
                     return (
                       <SongCard
-                        key={song.uri}                    
-                        name={song.name}
-                        artist={song.artists[0].name}
-                        imageSrc={song.album.images[0]?.url}
-                        onClick={() => setSelectedSong(song)}
+                      key={song.uri}
+                      name={song.name}
+                      artist={song.artists[0].name}
+                      imageSrc={song.album.images[0]?.url}
+                      chooseSong={() => chooseSong(song)}
                       />
                     );
                   })}
@@ -117,8 +90,8 @@ const Search = ({ accessToken }) => {
                   {singers.map((singer) => {
                     return (
                       <ArtistCard
-                        artist={singer.name}
-                        imageSrc={singer.images[0]?.url}
+                      artist={singer.name}
+                      imageSrc={singer.images[0]?.url}
                       />
                     );
                   })}
@@ -134,9 +107,9 @@ const Search = ({ accessToken }) => {
                   {albums.map((album) => {
                     return (
                       <AlbumCard
-                        artist={album.artists[0].name}
-                        name={album.name}
-                        imageSrc={album.images[0]?.url}
+                      artist={album.artists[0].name}
+                      name={album.name}
+                      imageSrc={album.images[0]?.url}
                       />
                     );
                   })}
@@ -146,13 +119,18 @@ const Search = ({ accessToken }) => {
           </Results>
         </SearchForm>
       </SearchDiv>
-      <MusicPlayer
+    </SearchPage> 
+    <MusicPlayer
       accessToken={accessToken}
       songUri={selectedSong? selectedSong.uri : null}
       />
     </Container>
   );
 };
+
+const Container = styled.div`
+height: 100vh;
+`
 
 const SearchSection = styled.div`
   display: flex;
@@ -167,17 +145,26 @@ const SearchSection = styled.div`
 const Results = styled.div`
   margin-top: 10px;
   margin-left: 20px;
+  max-height: 85vh;
 `;
 
 const Cards = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CardsDiv = styled.div`
   display: flex;
   flex-direction: column;
+  height: fit-content;
+  max-width: 1530px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
 `;
 
 const SearchDiv = styled.div`
@@ -186,17 +173,17 @@ const SearchDiv = styled.div`
 `;
 
 const SearchForm = styled.form`
-
   input {
-      outline: none;
-      border: 2px solid darkgray;
-      border-radius: 25px;
-      margin-left: 20px;
-      margin-top: 10px;
-    }
+    outline: none;
+    border: 2px solid darkgray;
+    border-radius: 25px;
+    margin-left: 20px;
+    margin-top: 10px;
+  }
 `;
-const Container = styled.div`
+const SearchPage = styled.div`
   display: flex;
+  width: 90vh;
 `;
 
 export default Search;
