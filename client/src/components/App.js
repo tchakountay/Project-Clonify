@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
-import Homepage from "./homepage/Homepage";
+import Homepage from "./loginpage/Homepage";
 import Welcome from "./WelcomePage";
 import Home from "./homefeed/Home";
+import Library from "./library/UserLibrary";
 import Search from "./search/Search";
 import SpotifyAuth from "./SpotifyAuth";
+import MusicPlayer from "./MusicPlayer";
 import { UserProvider , UserContext} from "./context/UserContext";
 import { NavLink, BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
@@ -18,7 +20,9 @@ const App = () => {
   const [userId, setUserId] = useState('');
   
   const code = new URLSearchParams(window.location.search).get("code")
+  //function to add song to user's library
 
+  
   useEffect(() => {
     setAccessToken(localStorage.getItem("accessToken"));
     //Fetch the access token from Spotify
@@ -32,7 +36,6 @@ const App = () => {
         console.log(data);
         setAccessToken(data.accessToken);
         localStorage.setItem('accessToken', data.accessToken);
-        // window.history.pushState("", "", "/")
         setRefreshToken(data.refreshToken);
         setExpiresIn(data.expiresIn);
       })
@@ -64,9 +67,6 @@ const App = () => {
       return () => clearInterval(interval);
     }, [refreshToken, expiresIn]);
 
-    console.log(accessToken);
-    console.log(refreshToken);
-    console.log(code)
     return (
       <BrowserRouter>
         <GlobalStyles />
@@ -82,7 +82,8 @@ const App = () => {
             }
           />
           <Route path="/welcome" element={<Welcome />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Home accessToken={accessToken}/>} />
+          <Route path="/library" element={<Library accessToken={accessToken} />} />
           <Route path="/search" element={<Search accessToken={accessToken}/>} />
         </Routes>
       </BrowserRouter>

@@ -24,5 +24,9 @@ const MusicPlayer = ({accessToken, songUri}) => {
 
 const Container = styled.div`
     display: flex;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    opacity: 0.8;
 `
 export default MusicPlayer;

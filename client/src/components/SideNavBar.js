@@ -77,10 +77,12 @@ const PlaylistDiv = styled.div`
 
 const Playlist = styled.button`
   margin-top: 40px;
-  background: transparent;
+  background-color: #ccb3ff;
   width: 200px;
-  
-  &:hover{
+  border: none;
+  border-radius: 25px;
+
+  &:hover {
     opacity: 0.8;
     cursor: pointer;
   }
@@ -94,8 +96,12 @@ const Playlist = styled.button`
 `;
 
 const Plus = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 30px;
   margin-right: 10px;
+  margin: none;
 `;
 
 const Container = styled.div`
@@ -104,7 +110,7 @@ const Container = styled.div`
   background-color: black;
   width: 250px;
   min-width: 250px;
-  height: 90vh;
+  height: 100vh;
   position: relative;
 `;
 

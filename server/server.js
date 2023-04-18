@@ -7,7 +7,14 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 //exports of the handler functions
-const { getUserById, createUser, validateUser } = require("./handlers");
+const { 
+  getUserById, 
+  createUser, 
+  validateUser, 
+  getUserLibrary,
+  createUserLibrary,
+  addSongToLibrary,
+  removeSongFromLibrary } = require("./handlers");
 
 express()
   .use(morgan("tiny"))
@@ -17,7 +24,7 @@ express()
   .use(
     cors({
       origin: "http://localhost:3000",
-      methods: ["GET", "POST"],
+      methods: ["GET", "POST", "DELETE", "PATCH"],
       allowedHeaders: ["Content-Type"],
     })
   )
@@ -78,6 +85,19 @@ express()
   .get("/api/get-user/:userId", (req, res) =>
     getUserById(req, res, req.params.userId)
   )
+
+  //SERVER ENDPOINT TO CREATE USER LIBRARY
+  .post("/api/create-user-library/:userId", createUserLibrary)
+
+  //SERVER ENDPOINT TO ADD SONG TO LIBRARY
+  .post("/api/add-song-to-library/:userId", addSongToLibrary)
+
+  //SERVER ENDPOINT TO GET USER LIBRARY
+  .get("/api/get-user-library/:userId", getUserLibrary)
+
+  //SERVER ENDPOINT TO DELETE SONG FROM LIBRARY
+  .patch("/api/get-song-from-library/:userId/:songId", removeSongFromLibrary)
+  
   // handle 404s
   .get("*", (req, res) => {
     res.status(404).json({

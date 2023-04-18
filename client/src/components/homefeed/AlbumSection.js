@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-const AlbumCard = ({albums}) => {
+const AlbumSection = ({albums}) => {
+  console.log(albums);
   let firstResult = albums[0];
   let otherSongs = albums.slice(0, -15);
 
@@ -14,23 +15,23 @@ const AlbumCard = ({albums}) => {
   return (
     <Container>
       <FirstResult>
-        <CoverArt src={firstResult.images[0]?.url} alt="album-cover" />
+        <CoverArt src={firstResult.album.images[0]?.url} alt="album-cover" />
         <div>
-          <h1>{firstResult.name}</h1>
-          <p>{firstResult.artists[0].name}</p>
+          <h1>{firstResult.album.name}</h1>
+          <p>{firstResult.album.artists[0].name}</p>
         </div>
       </FirstResult>
       <Results>
         {otherSongs.map((album) => {
           return (
-            <Album>
-              <img src={album.images[0]?.url} />
+            <Album key={album.album.id}>
+              <img src={album.album.images[0]?.url} />
               <div>
                 <TitleNTime>
-                  <h1>{album.name}</h1>
-                  <p>{album.release_date}</p>
+                  <h1>{album.album.name}</h1>
+                  <p>{album.album.release_date}</p>
                 </TitleNTime>
-                <p>{album.artists[0].name}</p>
+                <p>{album.album.artists[0].name}</p>
               </div>
             </Album>
           );
@@ -118,4 +119,4 @@ const Container = styled.div`
   height: 400px;
   width: 800px;
 `;
-export default AlbumCard;
+export default AlbumSection;

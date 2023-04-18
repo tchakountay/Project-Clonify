@@ -70,6 +70,22 @@ const Homepage = ({ userId, setUserId}) => {
     setLoginForm(false);
   }
 
+//handles library initialization
+const createUserLibrary = (userId) => {
+  fetch(`http://localhost:8000/api/create-user-library/${userId}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      navigate(`/welcome`);
+    })
+    .catch((error) => console.log(error));
+}
 //FETCH SIGN UP DATA
 //handles the Signup confirmation
 const handleClick2 = (event) => {
@@ -91,8 +107,10 @@ const handleClick2 = (event) => {
         setSubStatus2("confirmed");
         console.log("navigating to welcome page");
         setCurrentUser(json.data);
-        navigate(`/welcome`);
+        console.log(json.data._id)
+        // navigate(`/welcome`);
         console.log(signUpFormData);
+        createUserLibrary(json.data._id);
       } else if (error) {
         setSubStatus2("error");
         setErrorMsgs2(errors[error]);
@@ -102,8 +120,7 @@ const handleClick2 = (event) => {
       console.error(error);
       setSubStatus2("error");
       setErrorMsgs2("Something went wrong, please try again later.");
-    }
-    )
+    })
 };
 
 // FETCH LOGIN DATA
