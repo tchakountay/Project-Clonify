@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import React from "react";
 
 const InputLogin = ({ name, type, placeholder, handleChange }) => {
   return (

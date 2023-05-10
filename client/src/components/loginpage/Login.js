@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import InputLogin from "./InputLogin";
-import React from "react";
 import LoginButton from "./LoginBtn";
 import ErrorMessages from "../Errors";
 
-const Login = ({
+const LoginForm = ({
   handleSignup,
   disabled,
   handleChange,
@@ -20,7 +19,7 @@ const Login = ({
   return (
     <FormDiv>
       <Title>Login</Title>
-      <LoginForm>
+      <LgnForm>
         <InputDiv>
           <div>
             <InputTxt>Email:</InputTxt>
@@ -53,7 +52,7 @@ const Login = ({
           />
         </BtnDiv>
         {subStatus === "error" && <ErrorMessages child={errorMsgs}/>}
-      </LoginForm>
+      </LgnForm>
     </FormDiv>
   );
 };
@@ -121,7 +120,7 @@ const InputDiv = styled.div`
   }
 `;
 
-const LoginForm = styled.form`
+const LgnForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,4 +128,4 @@ const LoginForm = styled.form`
   padding: 10px;
   border-radius: 10px;
 `;
-export default Login;
+export default LoginForm;

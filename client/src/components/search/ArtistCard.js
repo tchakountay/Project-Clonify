@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const ArtistCard = ({singers}) => {
-
+  console.log(singers);
   let results = singers.slice(0, -15);
   return (
         <Container> 

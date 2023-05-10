@@ -1,6 +1,6 @@
 import Navbar from "./Navigationbar";
 import SignUp from "./Signup";
-import Login from "./Login";
+import LoginForm from "./Login";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import React from "react";
 import { errors, initialStateLogin, initialStateSignup } from "../settings";
 import { UserContext } from "../context/UserContext";
 
-const Homepage = ({ userId, setUserId}) => {
+const LoginPage = ({ userId, setUserId}) => {
   const navigate = useNavigate();
 
   const {setCurrentUser} = useContext(UserContext);
@@ -170,7 +170,7 @@ const handleClick = (event) => {
         {subStatus !== "confirmed" ? (
           <>
             <LoginDiv loginForm={loginForm}>
-              <Login
+              <LoginForm
                 // accessToken={accessToken}
                 disabled={disabled}
                 handleChange={handleChange}
@@ -218,4 +218,4 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-export default Homepage;
+export default LoginPage;
